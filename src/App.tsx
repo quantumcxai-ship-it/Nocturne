@@ -22,19 +22,21 @@ function App() {
         {/* Global Navigation Bar */}
         <Navbar />
 
-        {/* Sections */}
-        <Hero />
-        <Music />
-        <Tour />
-        <Videos />
-        <Merch />
-        <EPK />
-        <MailingList />
-        <Contact />
-        <Footer />
-
-        {/* Persistent Custom Audio Player */}
-        <AudioPlayer />
+        {/* Main Content Wrapper (blurred when mobile menu is open) */}
+        <div id="main-content">
+          <Hero />
+          <Music />
+          <Tour />
+          <Videos />
+          <Merch />
+          <EPK />
+          <MailingList />
+          <Contact />
+          <Footer />
+          
+          {/* Persistent Custom Audio Player */}
+          <AudioPlayer />
+        </div>
         
       </div>
     </AudioProvider>

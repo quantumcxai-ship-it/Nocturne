@@ -234,3 +234,15 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   scrollbar-width: none;
 }
 
+/* Blur transition for page content when mobile menu is open */
+#main-content {
+  transition: filter 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: filter, opacity;
+}
+
+body.mobile-menu-open #main-content {
+  filter: blur(10px);
+  opacity: 0.55;
+  pointer-events: none;
+}
+

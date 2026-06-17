@@ -20,15 +20,18 @@ export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const lastScrollY = useRef(0);
 
-  // Disable body scroll when mobile menu is open
+  // Disable body scroll and add blur class when mobile menu is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.body.classList.add("mobile-menu-open");
     } else {
       document.body.style.overflow = "";
+      document.body.classList.remove("mobile-menu-open");
     }
     return () => {
       document.body.style.overflow = "";
+      document.body.classList.remove("mobile-menu-open");
     };
   }, [isOpen]);
 
@@ -220,7 +223,7 @@ export const Navbar: React.FC = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="fixed inset-0 z-40 bg-black/98 backdrop-blur-xl flex flex-col items-center justify-center gap-7 md:hidden pt-20"
+            className="fixed inset-0 z-[90] bg-black/75 backdrop-blur-xl flex flex-col items-center justify-center gap-7 md:hidden pt-20"
           >
             <motion.a
               variants={itemVariants}
