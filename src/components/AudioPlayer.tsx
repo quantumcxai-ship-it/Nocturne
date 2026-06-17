@@ -93,11 +93,94 @@ export const AudioPlayer: React.FC = () => {
     bottom: isVertical ? "96px" : "24px",
     width: isVertical ? "64px" : "92%",
     maxWidth: isVertical ? "64px" : "896px",
-    height: isVertical ? "280px" : isMobile ? "140px" : "80px",
+    height: isVertical ? "280px" : isMobile ? "108px" : "80px",
     opacity: isVisible ? 1 : 0,
     pointerEvents: isVisible ? ("auto" as const) : ("none" as const),
   };
 
+  // Dedicated Mobile 2-Row Horizontal Layout
+  if (isMobile && !isVertical) {
+    return (
+      <div 
+        style={playerStyle}
+        className="fixed z-50 shadow-[0_15px_50px_rgba(0,0,0,0.85)] border border-white/10 bg-[#0D0D0F]/90 backdrop-blur-xl flex flex-col py-3 px-4 gap-3 rounded-2xl border-glow-cyan/20 player-transition overflow-hidden"
+      >
+        {/* Row 1: Track Info (Left) & Controls (Right) */}
+        <div className="flex items-center justify-between w-full gap-4">
+          <div className="flex items-center gap-3 text-left overflow-hidden">
+            <div className="relative w-11 h-11 flex-shrink-0 flex items-center justify-center">
+              {currentTrack.cover ? (
+                <img
+                  src={currentTrack.cover}
+                  alt={currentTrack.title}
+                  className={`w-11 h-11 rounded-full object-cover border border-white/10 ${isPlaying ? "animate-vinyl-spin" : ""}`}
+                />
+              ) : (
+                <Disc className={`w-11 h-11 text-accent-cyan ${isPlaying ? "animate-vinyl-spin" : ""}`} />
+              )}
+              <div className="absolute w-2 h-2 rounded-full bg-black border border-white/20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10" />
+            </div>
+
+            <div className="flex flex-col select-none overflow-hidden max-w-[160px]">
+              <h4 className="font-display font-bold text-sm tracking-tight text-white truncate hover-glitch">
+                {currentTrack.title}
+              </h4>
+              <p className="font-mono text-[10px] text-muted-foreground uppercase truncate">
+                {currentTrack.album}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 flex-shrink-0">
+            <button
+              onClick={togglePlay}
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all ${
+                isPlaying
+                  ? "bg-accent-red text-white hover:bg-accent-red/90 border-glow-red"
+                  : "bg-white text-black hover:bg-white/90"
+              }`}
+            >
+              {isPlaying ? <Pause className="w-3.5 h-3.5" fill="currentColor" /> : <Play className="w-3.5 h-3.5 ml-0.5" fill="currentColor" />}
+            </button>
+            
+            <button
+              onClick={handleNext}
+              className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
+              title="Next Track"
+            >
+              <SkipForward className="w-3.5 h-3.5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Row 2: Progress Slider */}
+        <div className="flex items-center gap-3 w-full">
+          <span className="font-mono text-[9px] text-muted-foreground select-none w-8 text-right">
+            {formatTime(currentTime)}
+          </span>
+          <div className="relative flex-1 group flex items-center">
+            <input
+              type="range"
+              min="0"
+              max="100"
+              step="0.1"
+              value={progress}
+              onChange={handleSliderChange}
+              className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-accent-cyan outline-none transition-all"
+              style={{
+                background: `linear-gradient(to right, #00F0FF 0%, #00F0FF ${progress}%, rgba(255,255,255,0.1) ${progress}%, rgba(255,255,255,0.1) 100%)`
+              }}
+            />
+          </div>
+          <span className="font-mono text-[9px] text-muted-foreground select-none w-8 text-left">
+            {formatTime(duration)}
+          </span>
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop / Vertical Layout
   return (
     <div 
       style={playerStyle}
