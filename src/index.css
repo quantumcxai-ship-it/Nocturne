@@ -1,0 +1,236 @@
+@font-face {
+  font-family: 'Asgrike';
+  src: url('./assets/fonts/Asgrike.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+* { font-family: 'Asgrike', sans-serif; }
+.font-playfair { font-family: 'Asgrike', sans-serif; }
+
+/* Global safety overrides for Asgrike font to prevent clipping in all headings and text blocks */
+h1, h2, h3, h4, h5, h6,
+h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
+  line-height: 1.45 !important;
+  padding-top: 0.08em !important;
+  padding-bottom: 0.22em !important;
+  overflow: visible !important;
+  /* Promote to GPU compositing layer to bypass fixed SVG filter overlay rendering bugs */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Base HSL values matching PRD color palette */
+    --background: 0 0% 0%;             /* #000000 */
+    --foreground: 0 0% 92%;            /* #EAEAEA */
+    --surface: 240 8% 5%;              /* #0D0D0F */
+    
+    --card: 240 8% 5%;                 /* #0D0D0F */
+    --card-foreground: 0 0% 92%;
+    
+    --primary: 345 100% 60%;           /* #FF3366 (Signal Red) */
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 180 100% 50%;         /* #00F0FF (Cyan Glow) */
+    --secondary-foreground: 0 0% 0%;
+    
+    --muted: 0 0% 33%;                 /* #555555 */
+    --muted-foreground: 0 0% 60%;
+    
+    --border: 240 6% 15%;
+    --input: 240 6% 12%;
+    --ring: 180 100% 50%;
+    
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary selection:text-white overflow-x-hidden;
+    background-color: #000000;
+  }
+}
+
+/* Custom Film Grain Overlay */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.055;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+}
+
+/* Scanlines Effect */
+.scanlines {
+  position: relative;
+}
+.scanlines::before {
+  content: " ";
+  display: block;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+  z-index: 2;
+  background-size: 100% 4px, 6px 100%;
+  pointer-events: none;
+}
+
+/* Neon Glow utilities */
+.glow-red {
+  text-shadow: 0 0 10px hsla(345, 100%, 60%, 0.5), 0 0 20px hsla(345, 100%, 60%, 0.3);
+}
+
+.glow-cyan {
+  text-shadow: 0 0 10px hsla(180, 100%, 50%, 0.5), 0 0 20px hsla(180, 100%, 50%, 0.3);
+}
+
+.border-glow-red {
+  box-shadow: 0 0 15px hsla(345, 100%, 60%, 0.25);
+}
+
+.border-glow-cyan {
+  box-shadow: 0 0 15px hsla(180, 100%, 50%, 0.25);
+}
+
+/* Custom Audio Player Spin animation */
+@keyframes vinyl-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-vinyl-spin {
+  animation: vinyl-spin 4s linear infinite;
+}
+
+/* Glitch keyframes for hover effects */
+@keyframes textGlitch {
+  0% {
+    text-shadow: 1px 1px 0px hsla(180, 100%, 50%, 0.7), -1px -1px 0px hsla(345, 100%, 60%, 0.7);
+  }
+  50% {
+    text-shadow: -1px 2px 0px hsla(180, 100%, 50%, 0.7), 2px -1px 0px hsla(345, 100%, 60%, 0.7);
+  }
+  100% {
+    text-shadow: 2px -2px 0px hsla(180, 100%, 50%, 0.7), -2px 2px 0px hsla(345, 100%, 60%, 0.7);
+  }
+}
+
+.hover-glitch:hover {
+  animation: textGlitch 0.25s infinite linear;
+}
+
+/* Chromatic Aberration Text Shadow effect */
+.chromatic-aberration {
+  text-shadow: -2px 0 0px #00F0FF, 2px 0 0px #FF3366;
+}
+
+/* Liquid / Glass effect updated for Nocturne styling */
+.brutalist-card {
+  background: #0D0D0F;
+  border: 1px solid #1E1E22;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.brutalist-card:hover {
+  border-color: #00F0FF;
+  box-shadow: 0 0 15px hsla(180, 100%, 50%, 0.15);
+}
+
+/* Marquee track animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Lithos Hero Animations */
+@keyframes heroReveal { 0%{opacity:0;transform:translateY(28px);filter:blur(12px)} 100%{opacity:1;transform:translateY(0);filter:blur(0)} }
+@keyframes heroFadeUp { 0%{opacity:0;transform:translateY(20px)} 100%{opacity:1;transform:translateY(0)} }
+@keyframes heroZoom { 0%{transform:scale(1.12)} 100%{transform:scale(1)} }
+.hero-anim { opacity:0; animation-fill-mode:forwards; animation-timing-function:cubic-bezier(0.16,1,0.3,1); }
+.hero-reveal { animation-name:heroReveal; animation-duration:1.1s; }
+.hero-fade { animation-name:heroFadeUp; animation-duration:1s; }
+.hero-zoom { animation:heroZoom 1.8s cubic-bezier(0.16,1,0.3,1) forwards; }
+@media (prefers-reduced-motion: reduce){ .hero-anim,.hero-zoom{ animation:none; opacity:1; } }
+
+/* Vinyl Disc Player Stylings for Music Section (White 3D Vinyl) */
+.vinyl-record-player {
+  background: repeating-radial-gradient(
+    circle,
+    #ffffff 0px,
+    #e8ebf0 1.5px,
+    #c4c8d1 3px,
+    #e8ebf0 4.5px,
+    #ffffff 6px
+  );
+  box-shadow: 
+    0 50px 100px rgba(0, 0, 0, 0.95), 
+    0 20px 40px rgba(0, 0, 0, 0.8),
+    inset 0 0 120px rgba(0, 0, 0, 0.4),
+    inset 0 0 35px rgba(255, 255, 255, 0.95),
+    inset 0 0 15px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.vinyl-grooves-overlay {
+  background: 
+    conic-gradient(
+      from 0deg at 50% 50%,
+      rgba(0, 0, 0, 0.28) 0deg,
+      rgba(255, 255, 255, 0.55) 45deg,
+      rgba(0, 0, 0, 0.35) 90deg,
+      rgba(255, 255, 255, 0.55) 135deg,
+      rgba(0, 0, 0, 0.28) 180deg,
+      rgba(255, 255, 255, 0.55) 225deg,
+      rgba(0, 0, 0, 0.35) 270deg,
+      rgba(255, 255, 255, 0.55) 315deg,
+      rgba(0, 0, 0, 0.28) 360deg
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(0, 0, 0, 0.1) 30%,
+      rgba(255, 255, 255, 0.15) 60%,
+      rgba(0, 0, 0, 0.2) 80%,
+      rgba(255, 255, 255, 0.2) 100%
+    );
+  pointer-events: none;
+}
+
+.player-transition {
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
