@@ -33,10 +33,10 @@ function App() {
           <MailingList />
           <Contact />
           <Footer />
-          
-          {/* Persistent Custom Audio Player */}
-          <AudioPlayer />
         </div>
+        
+        {/* Persistent Custom Audio Player */}
+        <AudioPlayer />
         
       </div>
     </AudioProvider>
